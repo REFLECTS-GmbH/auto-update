@@ -86,9 +86,9 @@ const handlePullRequest = async (
     octokit: InstanceType<typeof GitHub>;
   }>,
 ): Promise<void> => {
-  if (!pullRequest.auto_merge) {
+  if (pullRequest.draft) {
     info(
-      `Pull request #${pullRequest.number} does not have auto-merge enabled`,
+        `Pull request #${pullRequest.number} is a draft.`,
     );
     return;
   }
