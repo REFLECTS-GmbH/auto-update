@@ -86,9 +86,9 @@ const handlePullRequest = async (
     octokit: InstanceType<typeof GitHub>;
   }>,
 ): Promise<void> => {
-  if (!pullRequest.auto_merge) {
+  if (pullRequest.draft) {
     info(
-      `Pull request #${pullRequest.number} does not have auto-merge enabled`,
+        `Pull request #${pullRequest.number} is a draft.`,
     );
     return;
   }
@@ -123,11 +123,11 @@ const run = async () => {
     const token = getInput("github_token", { required: true });
     const octokit = getOctokit(token);
 
-    if (context.eventName !== "push") {
+    /*if (context.eventName !== "push") {
       throw new Error(
         `Expected to be triggered by a "push" event but received a "${context.eventName}" event`,
       );
-    }
+    }*/
 
     const eventPayload = context.payload as PushEvent;
     // See https://docs.github.com/en/free-pro-team@latest/developers/webhooks-and-events/webhook-events-and-payloads#webhook-payload-object-34.
